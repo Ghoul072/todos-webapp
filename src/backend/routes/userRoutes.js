@@ -35,8 +35,16 @@ router.put('/:userId', async (req, res) => {
     };
 });
 
-router.delete('/:userId', (req, res) => {
-    res.send(`Delete user with ID: ${req.params.userId}`);
+router.delete('/:userId', async (req, res) => {
+    try {
+        const currentUser = await User.findByPk(req.params.userId);
+        if (!currentUser) {return res.status(404).json({ error: 'User not found' })};
+        await currentUser.destroy();
+        res.status(200).json({ message: 'User deleted successfully '});
+    } catch (error) {
+        console.log(error);
+        res.send(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 module.exports = router;
