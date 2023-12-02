@@ -31,19 +31,8 @@ const User = sequelize.define('users', {
                 }
             }
         }
-    },
-    created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-    },
-    updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-    },
+    }
 }, {
-    timestamps: false,
     hooks: {
         beforeCreate: async user => {
             const hashedPassword = await bcrypt.hash(user.password, 10);
