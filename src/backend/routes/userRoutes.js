@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send("User List");
+const User = require('../models/user');
+
+router.get('/', async (req, res) => {
+    res.send(await User.findAll());
 });
 
 router.post('/', (req, res) => {
