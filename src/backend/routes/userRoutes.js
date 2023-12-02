@@ -16,8 +16,13 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/:userId', (req, res) => {
-    res.send(`Information for user with ID: ${req.params.userId}`);
+router.get('/:userId', async (req, res) => {
+    var foundUser = await User.findByPk(req.params.userId);
+    if (!foundUser) {
+        res.send({ error: 'User not found' })
+    } else {
+        res.send(foundUser);
+    };
 });
 
 router.put('/:userId', (req, res) => {
