@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
 router.get('/:userId', async (req, res) => {
     var foundUser = await User.findByPk(req.params.userId);
     if (!foundUser) {
-        res.send({ error: 'User not found' })
+        res.status(404).json({ error: 'User not found' });
     } else {
         res.send(foundUser);
     };
@@ -28,6 +28,7 @@ router.get('/:userId', async (req, res) => {
 router.put('/:userId', async (req, res) => {
     try {
         const currentUser = await User.findByPk(req.params.userId);
+        if (!currentUser) {return res.status(404).json({ error: 'User not found' })};
         await currentUser.update(req.body);
         res.status(201).json(currentUser);
     } catch (error) {
