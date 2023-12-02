@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
         res.status(201).json(newUser);
     } catch (error) {
         res.status(400).json({ error: error.errors[0].message });
-    }
+    };
 });
 
 router.get('/:userId', async (req, res) => {
@@ -25,8 +25,14 @@ router.get('/:userId', async (req, res) => {
     };
 });
 
-router.put('/:userId', (req, res) => {
-    res.send(`Update user with ID: ${req.params.userId}`);
+router.put('/:userId', async (req, res) => {
+    try {
+        const currentUser = await User.findByPk(req.params.userId);
+        await currentUser.update(req.body);
+        res.status(201).json(currentUser);
+    } catch (error) {
+        res.status(400).json({ error: error.errors[0].message });
+    };
 });
 
 router.delete('/:userId', (req, res) => {
