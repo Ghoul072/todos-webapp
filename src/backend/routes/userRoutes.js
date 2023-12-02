@@ -7,8 +7,13 @@ router.get('/', async (req, res) => {
     res.send(await User.findAll());
 });
 
-router.post('/', (req, res) => {
-    res.send("Create user");
+router.post('/', async (req, res) => {
+    try {
+        const newUser = await User.create(req.body);
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(400).json({ error: error.errors[0].message });
+    }
 });
 
 router.get('/:userId', (req, res) => {
