@@ -82,7 +82,14 @@ router.post('/refresh', async (req, res) => {
 router.put('/:userId', async (req, res) => {
     try {
         const currentUser = await User.findByPk(req.params.userId);
-        if (!currentUser) {return res.status(404).json({ error: 'User not found' })};
+        if (!currentUser) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        
+        if (currentUser.id != req.userId) {
+            return res.status(403).json({ error: 'Forbidden - Access Denied' });
+        }
+
         await currentUser.update(req.body);
         res.status(201).json(currentUser);
     } catch (error) {
@@ -93,7 +100,14 @@ router.put('/:userId', async (req, res) => {
 router.delete('/:userId', async (req, res) => {
     try {
         const currentUser = await User.findByPk(req.params.userId);
-        if (!currentUser) {return res.status(404).json({ error: 'User not found' })};
+        if (!currentUser) {
+            return res.status(404).json({ error: 'User not found' })
+        };
+
+        if (currentUser.id != req.userId) {
+            return res.status(403).json({ error: 'Forbidden - Access Denied' });
+        }
+
         await currentUser.destroy();
         res.status(200).json({ message: 'User deleted successfully '});
     } catch (error) {
