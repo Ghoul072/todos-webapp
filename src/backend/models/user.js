@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../db/mysql');
 const bcrypt = require('bcrypt');
+const Token = require('./token');
+const ToDo = require('./todo');
 
 const User = sequelize.define('users', {
     id: {
@@ -46,5 +48,11 @@ const User = sequelize.define('users', {
         }
     }
 });
+
+User.hasOne(Token, { foreignKey: 'userId' });
+Token.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(ToDo, { foreignKey: 'userId' })
+ToDo.belongsTo(User, { foreignKey: 'userId' });
 
 module.exports = User;

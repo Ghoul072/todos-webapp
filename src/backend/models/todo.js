@@ -29,6 +29,4 @@ const ToDo = sequelize.define('todos', {
     }
 });
 
-ToDo.belongsTo(User, {foreignKey: 'user_id'});
-
 module.exports = ToDo;
